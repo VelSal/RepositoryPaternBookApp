@@ -1,26 +1,35 @@
-﻿using RepositoryPaternBookApp.Interfaces;
+﻿using RepositoryPaternBookApp.Data;
+using RepositoryPaternBookApp.Interfaces;
 using RepositoryPaternBookApp.Models.DomainModels;
 
 namespace RepositoryPaternBookApp.Repositories
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-		public IRepository<Book> Books => throw new NotImplementedException();
+		private readonly RepoContext _context;
 
-		public IRepository<Author> Authors => throw new NotImplementedException();
+        public UnitOfWork(RepoContext context)
+        {
+			_context = context;
+			Books = new Repository<Book>(_context);
+			Authors = new Repository<Author>(_context);
+			Genres = new Repository<Genre>(_context);
+			BooksGenres = new Repository<BookGenre>(_context);
+        }
 
-		public IRepository<Genre> Genres => throw new NotImplementedException();
-
-		public IRepository<BookGenre> BooksGenres => throw new NotImplementedException();
+		public IRepository<Book> Books { get;  }
+		public IRepository<Author> Authors { get; }
+		public IRepository<Genre> Genres { get; }
+		public IRepository<BookGenre> BooksGenres { get; }
 
 		public Task<int> CompleteAsync()
 		{
-			throw new NotImplementedException();
+			return _context.SaveChangesAsync();
 		}
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			_context.Dispose();
 		}
 	}
 }
