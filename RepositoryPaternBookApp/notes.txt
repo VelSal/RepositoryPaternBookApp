@@ -1,0 +1,2 @@
+﻿1: Installer packages (Microsoft.EntityFrameworkCore.SqlServer, Microsoft.EntityFrameworkCore.Tools)
+2: Créations de classes dans Models
