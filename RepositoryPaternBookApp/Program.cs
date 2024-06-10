@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using RepositoryPaternBookApp.Data;
+
 namespace RepositoryPaternBookApp
 {
 	public class Program
@@ -7,6 +10,11 @@ namespace RepositoryPaternBookApp
 			var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
+			builder.Services.AddDbContext<RepoContext>(options =>
+			{
+				options.UseSqlServer(builder.Configuration.GetConnectionString("RepoConn"));
+			});
+
 			builder.Services.AddControllersWithViews();
 
 			var app = builder.Build();
