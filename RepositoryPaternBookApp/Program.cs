@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RepositoryPaternBookApp.Data;
+using RepositoryPaternBookApp.Interfaces;
+using RepositoryPaternBookApp.Repositories;
 
 namespace RepositoryPaternBookApp
 {
@@ -16,6 +18,9 @@ namespace RepositoryPaternBookApp
 			});
 
 			builder.Services.AddControllersWithViews();
+
+			// Add dependency injection lifetime
+			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 			var app = builder.Build();
 
@@ -36,7 +41,7 @@ namespace RepositoryPaternBookApp
 
 			app.MapControllerRoute(
 				name: "default",
-				pattern: "{controller=Home}/{action=Index}/{id?}");
+				pattern: "{controller=Books}/{action=Index}/{id?}");
 
 			app.Run();
 		}
