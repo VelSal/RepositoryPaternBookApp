@@ -1,32 +1,44 @@
-﻿using RepositoryPaternBookApp.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using RepositoryPaternBookApp.Data;
+using RepositoryPaternBookApp.Interfaces;
 
 namespace RepositoryPaternBookApp.Repositories
 {
 	public class Repository<T> : IRepository<T> where T : class
 	{
-		public Task<T> AddAsync(T entity)
-		{
-			throw new NotImplementedException();
-		}
+		protected readonly RepoContext _context;
+        protected readonly DbSet<T> _dbSet;
 
-		public Task<T> DeleteAsync(int id)
-		{
-			throw new NotImplementedException();
-		}
+        public Repository(RepoContext context)
+        {
+            _context = context;
+			_dbSet = _context.Set<T>();
+        }
 
-		public IEnumerable<T> GetAllAsync()
+		public async Task<IEnumerable<T>> GetAllAsync()
 		{
-			throw new NotImplementedException();
+			return await _dbSet.ToListAsync();
 		}
-
-		public Task<T> GetByIdAsync(int id)
+		public async Task AddAsync(T entity)
 		{
-			throw new NotImplementedException();
+			await _dbSet.AddAsync(entity);
 		}
-
-		public Task<T> UpdateAsync(T entity)
+		public async Task DeleteAsync(int id)
 		{
-			throw new NotImplementedException();
+			var entity = await _dbSet.FindAsync(id);
+			if (entity != null)
+			{
+				_dbSet.Remove(entity);
+			}
+		}
+		public async Task<T> GetByIdAsync(int id)
+		{
+			return await _dbSet.FindAsync(id);
+		}
+		public async Task UpdateAsync(T entity)
+		{
+			_context.Entry(entity).State = EntityState.Modified;
+			await Task.CompletedTask;
 		}
 	}
 }

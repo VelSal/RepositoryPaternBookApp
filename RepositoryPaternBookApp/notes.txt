@@ -6,4 +6,4 @@
 6: builder dans Program.cs
 7: Add-Migration "create db" + Update-Database
 8: Dossier "Interfaces": IRepository avec class constraint
-9: Dossier "Repositories": classe "Repository" avec IRepository et implémentation
+9: Dossier "Repositories": classe "Repository" avec IRepository + implémentation + logique
