@@ -1,9 +1,11 @@
-﻿1: Installer packages (Microsoft.EntityFrameworkCore.SqlServer, Microsoft.EntityFrameworkCore.Tools)
-2: Créations de classes dans Models
-3: Dossier "Enums" 
-4: Dossier "Data": RepoContext, SeedData
-5: Connexion string dans appsettings
-6: builder dans Program.cs
-7: Add-Migration "create db" + Update-Database
-8: Dossier "Interfaces": IRepository avec class constraint
-9: Dossier "Repositories": classe "Repository" avec IRepository + implémentation + logique
+﻿STEP_BY_STEP GUIDE
+
+1:	Installer packages (Microsoft.EntityFrameworkCore.SqlServer, Microsoft.EntityFrameworkCore.Tools)
+2:	Créations de classes dans Models
+3:	Dossier "Enums" 
+4:	Dossier "Data": RepoContext, SeedData
+5:	Connexion string dans appsettings
+6:	builder dans Program.cs
+7:	Add-Migration "create db" + Update-Database
+8:	Dossier "Interfaces": IRepository avec class constraint
+9:	Dossier "Repositories": classe "Repository" avec IRepository + implémentation + logique
