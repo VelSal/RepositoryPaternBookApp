@@ -9,3 +9,5 @@
 7:	Add-Migration "create db" + Update-Database
 8:	Dossier "Interfaces": IRepository avec class constraint
 9:	Dossier "Repositories": classe "Repository" avec IRepository + implémentation + logique
+10:	Interface IUnitOfWork dans le dossier Interfaces
+11: Classe UnitOfWork dans le dossier Repositories + implémentation + logique
