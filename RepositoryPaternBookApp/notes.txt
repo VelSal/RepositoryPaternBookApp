@@ -5,3 +5,4 @@
 5: Connexion string dans appsettings
 6: builder dans Program.cs
 7: Add-Migration "create db" + Update-Database
+8: Dossier Interfaces: IRepository avec class constraint, 
