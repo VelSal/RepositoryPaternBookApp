@@ -18,5 +18,7 @@ namespace RepositoryPaternBookApp.Models.DomainModels
 
         public BindingType? BindingType { get; set; }
 
+        public string? ImagePath { get; set; }
+
     }
 }
