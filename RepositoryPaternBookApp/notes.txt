@@ -2,3 +2,4 @@
 2: Créations de classes dans Models
 3: Dossier Enums 
 4: Dossier Data: RepoContext, SeedData
+5: Connexion string dans appsettings
