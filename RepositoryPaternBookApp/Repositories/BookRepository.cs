@@ -19,6 +19,7 @@ namespace RepositoryPaternBookApp.Repositories
 				.Include(b => b.Author)
 				.Include(b => b.BookGenres)
 				.ThenInclude(bg => bg.Genre)
+				.OrderByDescending(b => b.BookId)
 				.Skip((pageNumber - 1) * pageSize)
 				.Take(pageSize)
 				.ToListAsync();

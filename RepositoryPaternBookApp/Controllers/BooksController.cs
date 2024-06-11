@@ -65,12 +65,12 @@ namespace RepositoryPaternBookApp.Controllers
 			}
 			string imagePath = await SaveImageAsync(viewModel.Image);
 
-			if (imagePath == null)
-			{
-				viewModel.Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList();
-				viewModel.Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList();
-				return View(viewModel);
-			}
+			//if (imagePath == null)
+			//{
+			//	viewModel.Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList();
+			//	viewModel.Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList();
+			//	return View(viewModel);
+			//}
 
 			var newBook = new Book
 			{

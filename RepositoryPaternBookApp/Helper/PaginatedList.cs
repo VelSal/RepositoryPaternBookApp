@@ -9,7 +9,7 @@
 		public PaginatedList(IEnumerable<T> items, int count, int pageIndex, int pageSize)
 		{
 			PageIndex = pageIndex;
-			TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+			TotalPages = (int)Math.Ceiling(count / (double)pageSize) ;
 			Items = items;
 		}
 

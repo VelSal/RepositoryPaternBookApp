@@ -62,10 +62,10 @@
 			</li>
 		}
 
-		@for (int i = 1; i < Model.Books.TotalPages; i++)
+		@for (int i = 1; i <= Model.Books.TotalPages; i++)
 		{
-			<li class="page-item" @(i == Model.Books.PageIndex ? "active" : "")>
-				<a asp-action="Index" asp-route-pageNumber="@i" asp-route-pageSize="pageSize" class="page-link">@i</a>
+			<li class="page-item @(i == Model.Books.PageIndex ? "active" : "")">
+				<a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-pageSize="pageSize">@i</a>
 			</li>
 		}
 		@if (Model.Books.HasNextPage)
