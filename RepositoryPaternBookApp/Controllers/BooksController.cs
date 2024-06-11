@@ -38,10 +38,11 @@ namespace RepositoryPaternBookApp.Controllers
 			var paginatedBooks = new PaginatedList<BookIndexViewModel>(booksViewModels, count, pageNumber, pageSize);
 			var viewModel = new BooksListViewModel
 			{
+				Books = paginatedBooks,
+				TotalBooks = count,
+			};
 
-			}
-
-			return View();
+			return View(viewModel);
 		}
 		public async Task<IActionResult> Create()
 		{
