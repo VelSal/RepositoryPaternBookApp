@@ -1,0 +1,95 @@
+﻿@model CreateBookViewModel
+
+<h2>Add new book</h2>
+<div class="card">
+	<div class="card-body">
+		<form asp-action="Create" asp-controller="Boeken" enctype="multipart/form-data">
+			@Html.AntiForgeryToken()
+			<div class="form-group">
+				<label asp-for="Book.Title"></label>
+				<input asp-for="Book.Title" class="form-control" />
+				<span asp-validation-for="Book.Title" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="SelectedAuthorId" class="control-label"></label>
+				<select asp-for="SelectedAuthorId" class="form-control" asp-items="@(new SelectList(Model.Authors, "AuthorId", "Name"))"></select>
+				<span asp-validation-for="SelectedAuthorId" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<div class="form-group">
+					<input type="checkbox" asp-for="Book.IsAvailable" class="form-check-input" />
+					<label>&nbsp;Available</label>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="form-group">
+					<input type="checkbox" asp-for="Book.IsNewRelease" class="form-check-input" />
+					<label>&nbsp;New release</label>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="form-group">
+					<input type="checkbox" asp-for="Book.IsBestSeller" class="form-check-input" />
+					<label>&nbsp;Best seller</label>
+				</div>
+			</div>
+
+			<label class="mt-2"><b>Type binding</b></label>
+			<div class="form-group">
+				@foreach (var binding in Enum.GetValues<BindingType>())
+				{
+					<div class="form-check">
+						<input type="radio" asp-for="Book.BindingType" value="@binding" class="form-check-input" />
+						<label>@binding</label>
+					</div>
+				}
+			</div>
+			<span asp-validation-for="Book.BindingType" class="text-danger"></span>
+
+			<div class="form-group my-2">
+				<label><b>Genres</b></label>
+				@foreach (var genre in Model.Genres)
+				{
+					<div class="form-check">
+						<input type="checkbox" name="SelectedGenres" value="@genre.GenreId" class="form-check-input" />
+						<label class="form-check-label">@genre.Name</label>
+					</div>
+				}
+			</div>
+
+			<div class="form-group">
+				<label><b>Image</b></label>
+				<input type="file" asp-for="Image" class="form-control-file" onchange="previewImage(event)" />
+				<span asp-validation-for="Image" class="text-danger"></span>
+			</div>
+
+			<div class="form-group my-3">
+				<img id="afbeeldingPreview" src="@Model.ImagePath" class="img-thumbnail img-fluid zoom" style="height: 200px; margin-right: 15px;" alt="Boek Afbeelding" />
+
+			</div>
+
+			<input type="submit" value="Add book" class="btn btn-primary" />
+
+		</form>
+		<a asp-action"Index" class="btn btn-secondary my-1">Back to list</a>
+	</div>
+
+</div>
+
+@section Scripts {
+	<script>
+		function previewImage(event) {
+			var reader = new FileReader();
+			reader.onload = function () {
+				var output = document.getElementById('afbeeldingPreview');
+				output.style.display = 'block';
+				output.src = reader.result;
+			};
+			reader.readAsDataURL(event.target.files[0]);
+		}
+	</script>
+}
