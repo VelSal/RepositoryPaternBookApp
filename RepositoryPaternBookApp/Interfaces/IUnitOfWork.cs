@@ -8,6 +8,7 @@ namespace RepositoryPaternBookApp.Interfaces
 		IRepository<Author> Authors { get; }
 		IRepository<Genre> Genres { get; }
 		IRepository<BookGenre> BooksGenres { get; }
+		IBookRepository BooksRelated {  get; }
 
 		Task<int> CompleteAsync();
     }

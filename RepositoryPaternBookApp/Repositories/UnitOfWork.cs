@@ -15,12 +15,14 @@ namespace RepositoryPaternBookApp.Repositories
 			Authors = new Repository<Author>(_context);
 			Genres = new Repository<Genre>(_context);
 			BooksGenres = new Repository<BookGenre>(_context);
+			BooksRelated = new BookRepository(_context);
         }
 
 		public IRepository<Book> Books { get;  }
 		public IRepository<Author> Authors { get; }
 		public IRepository<Genre> Genres { get; }
 		public IRepository<BookGenre> BooksGenres { get; }
+		public IBookRepository BooksRelated { get; }
 
 		public Task<int> CompleteAsync()
 		{

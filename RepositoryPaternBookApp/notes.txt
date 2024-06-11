@@ -15,4 +15,7 @@
 13: Ajouter l'injection de dépendence en dessous dans Program.cs 
 		- builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 14: Logique du controller de Books
-15: Continuer comme d'hab (creation de viewmodel)
+15: Continuer comme d'hab (creation de viewmodel, view, ...)
+16: APD index, on utilise une nouvelle interface: IBookRepository
+17: BookRepository dans Repositories
+	/!\ UTILISATION DE TUPLE POUR LA PAGINATION

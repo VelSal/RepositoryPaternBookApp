@@ -1,0 +1,33 @@
+﻿using Microsoft.EntityFrameworkCore;
+using RepositoryPaternBookApp.Data;
+using RepositoryPaternBookApp.Interfaces;
+using RepositoryPaternBookApp.Models.DomainModels;
+
+namespace RepositoryPaternBookApp.Repositories
+{
+	public class BookRepository : Repository<Book>, IBookRepository
+	{
+		private readonly RepoContext _context;
+		public BookRepository(RepoContext context) : base(context)
+		{
+			_context = context;
+		}
+		public async Task<(IEnumerable<Book> Books, int count)> GetAllBooksWithAuthorsAndGenresAsync(int pageNumber, int pageSize)
+		{
+			var count = await _context.Books.CountAsync();
+			var books = await _context.Books
+				.Include(b => b.Author)
+				.Include(b => b.BookGenres)
+				.ThenInclude(bg => bg.Genre)
+				.Skip((pageNumber - 1) * pageSize)
+				.Take(pageSize)
+				.ToListAsync();
+			return (books, count);
+		}
+
+		public Task<Book> GetBookWithGenresAsync(int id)
+		{
+			throw new NotImplementedException();
+		}
+	}
+}

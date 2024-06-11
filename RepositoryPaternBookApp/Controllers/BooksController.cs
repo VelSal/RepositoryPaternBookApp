@@ -7,17 +7,35 @@ using System.Reflection;
 
 namespace RepositoryPaternBookApp.Controllers
 {
-	public class Books : Controller
+	public class BooksController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public Books(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
+		public BooksController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
 		{
 			_unitOfWork = unitOfWork;
 			_webHostEnvironment = webHostEnvironment;
 		}
 
+		public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 3)
+		{
+			var (books, count) = await _unitOfWork.BooksRelated.GetAllBooksWithAuthorsAndGenresAsync(pageNumber, pageSize);
+
+			var booksViewModels = books.Select(b => new BookIndexViewModel
+			{
+				BookId = b.BookId,
+				Title = b.Title,
+				AuthorName = b.Author.Name,
+				GenreNames = b.BookGenres.Select(bg => bg.Genre.Name).ToList(),
+				IsAvailable = b.IsAvailable,
+				IsBestSeller = b.IsBestSeller,
+				IsNewRelease = b.IsNewRelease,
+				BindingType = b.BindingType.ToString(),
+			}).ToList();
+
+			return View();
+		}
 		public async Task<IActionResult> Create()
 		{
 			var viewModel = new CreateBookViewModel
@@ -34,13 +52,15 @@ namespace RepositoryPaternBookApp.Controllers
 			//Si la data entrée n'est pas valide il faut montrer qqch sinon crash
 			if (!ModelState.IsValid)
 			{
-				await InvalidData(viewModel);
+				viewModel.Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList();
+				viewModel.Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList();
 			}
 			string imagePath = await SaveImageAsync(viewModel.Image);
 
 			if (imagePath == null)
 			{
-				await InvalidData(viewModel);
+				viewModel.Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList();
+				viewModel.Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList();
 				return View(viewModel);
 			}
 
@@ -73,11 +93,7 @@ namespace RepositoryPaternBookApp.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		private async Task InvalidData(CreateBookViewModel viewModel)
-		{
-			viewModel.Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList();
-			viewModel.Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList();
-		}
+		
 		private async Task<string> SaveImageAsync(IFormFile image)
 		{
 			if (image == null || image.Length == 0)
