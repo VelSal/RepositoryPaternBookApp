@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RepositoryPaternBookApp.Helper;
 using RepositoryPaternBookApp.Interfaces;
 using RepositoryPaternBookApp.Models.DomainModels;
 using RepositoryPaternBookApp.Models.ViewModels;
@@ -33,6 +34,12 @@ namespace RepositoryPaternBookApp.Controllers
 				IsNewRelease = b.IsNewRelease,
 				BindingType = b.BindingType.ToString(),
 			}).ToList();
+
+			var paginatedBooks = new PaginatedList<BookIndexViewModel>(booksViewModels, count, pageNumber, pageSize);
+			var viewModel = new BooksListViewModel
+			{
+
+			}
 
 			return View();
 		}
