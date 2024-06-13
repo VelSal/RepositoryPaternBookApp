@@ -26,11 +26,23 @@ namespace RepositoryPaternBookApp.Repositories
 			return (books, count);
 		}
 
+		public async Task<Book> GetBookWithGenresAndAuthorsAsync(int id)
+		{
+			var book = await _context.Books
+				.Include(b => b.Author)
+				.Include(b => b.BookGenres)
+				.ThenInclude(bg => bg.Genre)
+				.FirstOrDefaultAsync(b => b.BookId == id);
+			return book;
+		}
+
 		public async Task<Book> GetBookWithGenresAsync(int id)
 		{
 			return await _context.Books
 				.Include(b => b.BookGenres)
 				.FirstOrDefaultAsync(b => b.BookId == id);
 		}
+
+		
 	}
 }

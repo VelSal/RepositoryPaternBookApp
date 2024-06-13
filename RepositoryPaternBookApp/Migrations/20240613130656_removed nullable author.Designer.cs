@@ -12,8 +12,8 @@ using RepositoryPaternBookApp.Data;
 namespace RepositoryPaternBookApp.Migrations
 {
     [DbContext(typeof(RepoContext))]
-    [Migration("20240610085801_create db")]
-    partial class createdb
+    [Migration("20240613130656_removed nullable author")]
+    partial class removednullableauthor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

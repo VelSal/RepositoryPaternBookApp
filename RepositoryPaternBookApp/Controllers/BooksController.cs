@@ -69,13 +69,10 @@ namespace RepositoryPaternBookApp.Controllers
 				viewModel.Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList();
 				viewModel.Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList();
 			}
-			//string imagePath = await SaveImageAsync(viewModel.Image);
-
 
 			string? imagePath = viewModel.Image != null && viewModel.Image.Length > 0
 					? await SaveImageAsync(viewModel.Image)
 					: "/images/Default.png";
-
 
 			var newBook = new Book
 			{
@@ -183,6 +180,27 @@ namespace RepositoryPaternBookApp.Controllers
 				viewModel.Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList();
 				viewModel.Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList();
 			}
+			return View(viewModel);
+		}
+
+		public async Task<IActionResult> Details(int id)
+		{
+			var book = await _unitOfWork.BooksRelated.GetBookWithGenresAndAuthorsAsync(id);
+			if (book == null) return NotFound();
+
+			var viewModel = new BookDetailsViewModel
+			{
+				BookId = book.BookId,
+				Title = book.Title,
+				AuthorName = book.Author.Name,
+				GenreNames = book.BookGenres.Select(bg => bg.Genre.Name).ToList(),
+				IsAvailable = book.IsAvailable,
+				IsBestSeller = book.IsBestSeller,
+				IsNewRelease = book.IsNewRelease,
+				BindingType = book.BindingType.ToString(),
+				ImagePath = book.ImagePath
+			};
+
 			return View(viewModel);
 		}
 
