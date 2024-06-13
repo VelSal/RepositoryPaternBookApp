@@ -16,6 +16,6 @@ namespace RepositoryPaternBookApp.Models.ViewModels
 		public List<Author> Authors { get; set; }
 		public List<Genre> Genres { get; set; }
 		public IFormFile? Image { get; set; }
-		public string? ImagePath { get; set; } = "/images/Default.png";
+		public string? ImagePath { get; set; } = "images/Default.png";
 	}
 }
