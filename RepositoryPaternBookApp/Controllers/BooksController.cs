@@ -58,6 +58,7 @@ namespace RepositoryPaternBookApp.Controllers
 			};
 			return View(viewModel);
 		}
+
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(CreateBookViewModel viewModel)
@@ -97,6 +98,11 @@ namespace RepositoryPaternBookApp.Controllers
 				await _unitOfWork.CompleteAsync();
 			}
 			return RedirectToAction(nameof(Index));
+		}
+
+		public async Task<IActionResult> Edit()
+		{
+
 		}
 
 		[HttpPost]
