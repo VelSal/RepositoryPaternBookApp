@@ -46,6 +46,7 @@ namespace RepositoryPaternBookApp.Controllers
 				TotalBooks = count,
 			};
 
+			ViewBag.PageSize = pageSize;
 			return View(viewModel);
 		}
 		public async Task<IActionResult> Create()
@@ -105,7 +106,7 @@ namespace RepositoryPaternBookApp.Controllers
 			if (pageSize <3 || pageSize > 20)
 			{
 				ModelState.AddModelError("PageSize", "Page size must be between 3 and 20");
-				ViewData["PageSize"] = pageSize;
+				ViewBag.PageSize = pageSize;
 				return View(nameof(Index), new BooksListViewModel { Books = new PaginatedList<BookIndexViewModel>(new List<BookIndexViewModel>(), 0, 1, pageSize)});
 			}
 
