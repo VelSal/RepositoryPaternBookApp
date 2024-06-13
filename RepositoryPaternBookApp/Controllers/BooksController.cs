@@ -100,9 +100,29 @@ namespace RepositoryPaternBookApp.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		public async Task<IActionResult> Edit()
+		public async Task<IActionResult> Edit(int id)
 		{
+			var book = await _unitOfWork.BooksRelated.GetBookWithGenresAsync(id);
+			if (book == null)
+			{
+				return NotFound();
+			}
 
+			var bookViewModel = new EditBookViewModel
+			{
+				BookId = book.BookId,
+				Title = book.Title,
+				AuthorId = book.AuthorId,
+				SelectedGenres = book.BookGenres.Select(bg => bg.GenreId).ToList(),
+				IsAvailable = book.IsAvailable,
+				IsNewRelease = book.IsNewRelease,
+				IsBestSeller = book.IsBestSeller,
+				BindingType = book.BindingType,
+				ImagePath = book.ImagePath,
+				Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList(),
+				Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList(),
+			};
+			return View(bookViewModel);
 		}
 
 		[HttpPost]

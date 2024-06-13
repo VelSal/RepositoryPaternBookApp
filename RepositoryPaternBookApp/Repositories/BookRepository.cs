@@ -28,7 +28,9 @@ namespace RepositoryPaternBookApp.Repositories
 
 		public async Task<Book> GetBookWithGenresAsync(int id)
 		{
-			throw new NotImplementedException();
+			return await _context.Books
+				.Include(b => b.BookGenres)
+				.FirstOrDefaultAsync(b => b.BookId == id);
 		}
 	}
 }
