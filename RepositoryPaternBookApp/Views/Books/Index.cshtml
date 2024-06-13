@@ -1,9 +1,21 @@
 ﻿@model BooksListViewModel
+@* @{
+	var pageSize = Model.PageSize;
+} *@
 
 <h2>My bookshelf</h2>
 
 <div class="mb-3">
 	<a asp-action="Create" asp-controller="Books" class="btn btn-primary">Add New Book</a>
+</div>
+
+<div class="mb-3">
+	<form asp-action="SetPageSize" asp-controller="Books" method="post" id="pageSizeForm">
+		<label for="pageSize">Items per page</label>
+		<input type="number" name="pageSize" id="pageSize" class="form-control" value="@Model.PageSize" min="3" max="20" required />
+		<span class="text-danger" asp-validation-for="PageSize"></span>
+		<button type="submit" class="btn btn-primary">Set</button>
+	</form>
 </div>
 
 <table class="table table-striped">

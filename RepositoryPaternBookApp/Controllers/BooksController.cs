@@ -5,7 +5,6 @@ using RepositoryPaternBookApp.Models.DomainModels;
 using RepositoryPaternBookApp.Models.ViewModels;
 using System.Reflection;
 
-
 namespace RepositoryPaternBookApp.Controllers
 {
 	public class BooksController : Controller
@@ -21,6 +20,11 @@ namespace RepositoryPaternBookApp.Controllers
 
 		public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 3)
 		{
+			if (Request.Cookies["PageSize"] != null && int.TryParse(Request.Cookies["PageSize"], out var storedPageSize))
+			{
+				pageSize = storedPageSize;
+			}
+
 			var (books, count) = await _unitOfWork.BooksRelated.GetAllBooksWithAuthorsAndGenresAsync(pageNumber, pageSize);
 
 			var booksViewModels = books.Select(b => new BookIndexViewModel
@@ -65,13 +69,6 @@ namespace RepositoryPaternBookApp.Controllers
 			}
 			string imagePath = await SaveImageAsync(viewModel.Image);
 
-			//if (imagePath == null)
-			//{
-			//	viewModel.Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList();
-			//	viewModel.Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList();
-			//	return View(viewModel);
-			//}
-
 			var newBook = new Book
 			{
 				Title = viewModel.Book.Title,
@@ -101,6 +98,24 @@ namespace RepositoryPaternBookApp.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult SetPageSize(int pageSize)
+		{
+			if (pageSize <3 || pageSize > 20)
+			{
+				ModelState.AddModelError("PageSize", "Page size must be between 3 and 20");
+				ViewData["PageSize"] = pageSize;
+				return View(nameof(Index), new BooksListViewModel { Books = new PaginatedList<BookIndexViewModel>(new List<BookIndexViewModel>(), 0, 1, pageSize)});
+			}
+
+			CookieOptions options = new CookieOptions
+			{
+				Expires = DateTime.Now.AddDays(30),
+			};
+			Response.Cookies.Append("PageSize", pageSize.ToString(), options);
+			return RedirectToAction(nameof(Index));
+		}
 		
 		private async Task<string> SaveImageAsync(IFormFile image)
 		{

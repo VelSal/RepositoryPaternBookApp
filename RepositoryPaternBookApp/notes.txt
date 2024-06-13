@@ -19,3 +19,9 @@
 16: APD index, on utilise une nouvelle interface: IBookRepository
 17: BookRepository dans Repositories
 	/!\ UTILISATION DE TUPLE POUR LA PAGINATION
+
+COOKIES
+01)	Index view => form en haut
+02) Ajouter prop PageSize dans BooksListViewModel
+03) SetPageSize dans le controller
+04) Ajouter code pour cookies au début de l'action Index
