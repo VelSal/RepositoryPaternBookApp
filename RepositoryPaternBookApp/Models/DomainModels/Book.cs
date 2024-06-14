@@ -8,7 +8,7 @@ namespace RepositoryPaternBookApp.Models.DomainModels
         public int BookId { get; set; }
         public string Title { get; set; }
 		public int AuthorId { get; set; }
-		public Author Author { get; set; }
+		public Author? Author { get; set; }
 		public ICollection<BookGenre> BookGenres { get; set; } = new List<BookGenre>();
         public ICollection<Genre> Genres { get; set; } = new List<Genre>();
 

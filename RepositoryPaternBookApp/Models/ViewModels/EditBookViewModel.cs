@@ -13,8 +13,8 @@ namespace RepositoryPaternBookApp.Models.ViewModels
 		public bool IsNewRelease { get; set; }
 		public bool IsBestSeller { get; set; }
 		public BindingType? BindingType { get; set; }
-		public List<Author> Authors { get; set; }
-		public List<Genre> Genres { get; set; }
+		public List<Author>? Authors { get; set; }
+		public List<Genre>? Genres { get; set; }
 		public IFormFile? Image { get; set; }
 		public string? ImagePath { get; set; } = "images/Default.png";
 	}

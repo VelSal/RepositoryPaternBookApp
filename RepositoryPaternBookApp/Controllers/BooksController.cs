@@ -68,6 +68,7 @@ namespace RepositoryPaternBookApp.Controllers
 			{
 				viewModel.Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList();
 				viewModel.Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList();
+				return View(viewModel);
 			}
 
 			string? imagePath = viewModel.Image != null && viewModel.Image.Length > 0
