@@ -159,7 +159,7 @@ namespace RepositoryPaternBookApp.Controllers
 				book.ImagePath = imagePath;
 
 				//update genres
-				book.Genres.Clear();
+				book.BookGenres.Clear();
 				if (viewModel.SelectedGenres != null)
 				{
 					foreach (var genreId in viewModel.SelectedGenres)
@@ -179,18 +179,9 @@ namespace RepositoryPaternBookApp.Controllers
 			{
 				viewModel.Authors = (await _unitOfWork.Authors.GetAllAsync()).ToList();
 				viewModel.Genres = (await _unitOfWork.Genres.GetAllAsync()).ToList();
+				return View(viewModel);
 
-				foreach (var modelStateVal in ViewData.ModelState.Values)
-				{
-					foreach (var error in modelStateVal.Errors)
-					{
-						var errorMessage = error.ErrorMessage;
-						var exception = error.Exception;
-						// You may log the errors if you want
-					}
-				}
 			}
-			return View(viewModel);
 		}
 
 		public async Task<IActionResult> Details(int id)
@@ -213,6 +204,40 @@ namespace RepositoryPaternBookApp.Controllers
 
 			return View(viewModel);
 		}
+
+		public async Task<IActionResult> Delete(int id)
+		{
+			var book = await _unitOfWork.BooksRelated.GetBookWithGenresAndAuthorsAsync(id);
+			if (book == null)
+			{
+				return NotFound();
+			}
+			var viewModel = new BookDetailsViewModel
+			{
+				BookId = book.BookId,
+				Title = book.Title,
+				AuthorName = book.Author.Name,
+				GenreNames = book.BookGenres.Select(bg => bg.Genre.Name).ToList(),
+				IsAvailable = book.IsAvailable,
+				IsBestSeller = book.IsBestSeller,
+				IsNewRelease = book.IsNewRelease,
+				BindingType = book.BindingType.ToString(),
+				ImagePath = book.ImagePath
+			};
+
+			return View(viewModel);
+		}
+
+		[HttpPost, ActionName(nameof(Delete)), AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			await _unitOfWork.Books.DeleteAsync(id);
+			//TODO
+			//await DeleteImage()
+			await _unitOfWork.CompleteAsync();
+			return RedirectToAction(nameof(Index));
+		}
+
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -250,6 +275,17 @@ namespace RepositoryPaternBookApp.Controllers
 			}
 
 			return "/images/" + uniqueFileName;
+		}
+		private void DeleteImage(string imagePath)
+		{
+			if(!string.IsNullOrEmpty(imagePath))
+			{
+				var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", imagePath.TrimStart('/'));
+				if (System.IO.File.Exists(path))
+				{
+					System.IO.File.Delete(path);
+				}
+			}
 		}
 	}
 }

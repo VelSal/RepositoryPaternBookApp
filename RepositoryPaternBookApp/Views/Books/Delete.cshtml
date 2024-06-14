@@ -1,0 +1,72 @@
+﻿@model BookDetailsViewModel
+
+<h2>Are you sure you want to delete the book from the database?</h2>
+
+<div class="card">
+	<div class="card-body">
+		@if (!string.IsNullOrEmpty(Model.ImagePath))
+		{
+			<div class="form-group">
+				<img id="imagePreview" style="height:200px;" src="@Model.ImagePath" class="img-thumbnail img-fluid" />
+			</div>
+		}
+
+		<div class="form-group">
+			<label asp-for="Title" class="control-label"></label>
+			<input asp-for="Title" class="form-control" />
+		</div>
+
+		<div class="form-group">
+			<label asp-for="AuthorName" class="control-label"></label>
+			<input asp-for="AuthorName" class="form-control" />
+		</div>
+
+		<div class="form-group">
+			<input type="checkbox" asp-for="IsAvailable" disabled class="form-check-input" />
+			<label>Is Available</label>
+		</div>
+
+		<div class="form-group">
+			<input type="checkbox" asp-for="IsNewRelease" disabled class="form-check-input" />
+			<label>Is New</label>
+		</div>
+
+		<div class="form-group">
+			<input type="checkbox" asp-for="IsBestSeller" disabled class="form-check-input" />
+			<label>Is Bestseller</label>
+		</div>
+
+		<label class="mt-2"><b>Type Binding</b></label>
+		<div class="form-group">
+			@foreach (var binding in Enum.GetValues<BindingType>())
+			{
+				<div class="form-check">
+					<input class="form-check-input" type="radio" disabled asp-for="BindingType" value="@binding" />
+					<label>@binding</label>
+				</div>
+			}
+		</div>
+
+		<div class="row mb-2">
+			<div class="col-sm-2 font-weight-bold">Genres</div>
+			<div class="col-sm-10">
+				@foreach (var genre in Model.GenreNames)
+				{
+					<span class="badge" style="background-color: #007bff; color:white;">@genre</span>
+				}
+			</div>
+		</div>
+	</div>
+
+	<form asp-action="Delete" method="post">
+		@Html.AntiForgeryToken()
+		<input type="hidden" asp-for="BookId" />
+		<div class="form-group">
+			<input type="submit" value="Delete" class="btn btn-danger" />
+		</div>
+
+		<div class="my-2">
+			<a asp-action="Index" class="btn btn-secondary">Back to book list</a>
+		</div>
+	</form>
+</div>
