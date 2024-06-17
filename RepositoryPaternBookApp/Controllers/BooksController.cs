@@ -103,57 +103,6 @@ namespace RepositoryPaternBookApp.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		//[HttpPost, ValidateAntiForgeryToken]
-		//public async Task<IActionResult> Create(CreateBookViewModel viewModel)
-		//{
-		//	if (!ModelState.IsValid)
-		//	{
-		//		string? imagePath = viewModel.Image != null && viewModel.Image.Length > 0
-		//			? await SaveImageAsync(viewModel.Image)
-		//			: "/images/Default.png";
-		//		var newBook = new Book
-		//		{
-		//			Title = viewModel.Book.Title,
-		//			AuthorId = viewModel.SelectedAuthorId,
-		//			IsAvailable = viewModel.Book.IsAvailable,
-		//			IsBestSeller = viewModel.Book.IsBestSeller,
-		//			IsNewRelease = viewModel.Book.IsNewRelease,
-		//			BindingType = viewModel.Book.BindingType,
-		//			ImagePath = imagePath
-		//		};
-		//		await _unitOfWork.Books.AddAsync(newBook);
-		//		await _unitOfWork.CompleteAsync();
-
-		//		if (viewModel.SelectedGenres != null && viewModel.SelectedGenres.Any())
-		//		{
-		//			foreach (var genreId in viewModel.SelectedGenres)
-		//			{
-		//				var bookGenre = new BookGenre
-		//				{
-		//					BookId = newBook.BookId,
-		//					GenreId = genreId
-		//				};
-		//				await _unitOfWork.BooksGenres.AddAsync(bookGenre);
-		//			}
-		//			await _unitOfWork.CompleteAsync();
-		//		}
-		//	}
-		//	var newBookOk = new Book
-		//	{
-		//		Title = viewModel.Book.Title,
-		//		AuthorId = viewModel.SelectedAuthorId,
-		//		IsAvailable = viewModel.Book.IsAvailable,
-		//		IsBestSeller = viewModel.Book.IsBestSeller,
-		//		IsNewRelease = viewModel.Book.IsNewRelease,
-		//		BindingType = viewModel.Book.BindingType,
-		//		ImagePath = viewModel.ImagePath
-		//	};
-		//	await _unitOfWork.Books.AddAsync(newBookOk);
-		//	await _unitOfWork.CompleteAsync();
-		//	return RedirectToAction(nameof(Index));
-		//}
-
-
 		public async Task<IActionResult> Edit(int id)
 		{
 			var book = await _unitOfWork.BooksRelated.GetBookWithGenresAsync(id);
@@ -288,7 +237,6 @@ namespace RepositoryPaternBookApp.Controllers
 			await _unitOfWork.CompleteAsync();
 			return RedirectToAction(nameof(Index));
 		}
-
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
