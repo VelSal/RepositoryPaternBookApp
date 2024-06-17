@@ -228,11 +228,12 @@ namespace RepositoryPaternBookApp.Controllers
 			return View(viewModel);
 		}
 
-		[HttpPost, ActionName(nameof(Delete)), AutoValidateAntiforgeryToken]
+		[HttpPost, ActionName(nameof(Delete))]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
 			await _unitOfWork.Books.DeleteAsync(id);
-			//TODO
+			//TODO DELETE IMAGE FROM FOLDER
 			//await DeleteImage()
 			await _unitOfWork.CompleteAsync();
 			return RedirectToAction(nameof(Index));
